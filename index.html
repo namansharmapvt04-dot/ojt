@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <header>
+        <div class="container">
+            <h1>How can we help?</h1>
+            <p class="subtitle">Search our knowledge base or browse frequently asked questions.</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Ask a question..." autocomplete="off">
+                    <button id="search-btn" class="search-btn">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="ai-response-container" class="ai-response-container hidden">
+            <div class="ai-header">
+                <i class="fa-solid fa-robot"></i>
+                <span>AI Assistant</span>
+            </div>
+            <div id="ai-content" class="ai-content">
+                <!-- AI response will be injected here -->
+            </div>
+            <div class="ai-loading hidden">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div id="faq-list" class="faq-list">
+                <!-- FAQs will be injected here via JS -->
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Help Center. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
