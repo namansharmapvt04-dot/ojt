@@ -22,9 +22,9 @@ const staticFAQs = [
 ];
 
 // Your actual Gemini API key
-const GEMINI_API_KEY = 'AIzaSyB8JxfERKiU0qbDjFw0A1AdUEP0kmSJPDI';
+// API key will be injected by GitHub Actions during deploy
+const GEMINI_API_KEY = 'GEMINI_API_KEY_PLACEHOLDER';
 
-// ✅ FIX: use an active 2.5 model instead of retired 1.5/pro
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`;
 
 document.addEventListener('DOMContentLoaded', () => {
