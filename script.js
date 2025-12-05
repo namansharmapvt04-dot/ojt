@@ -22,7 +22,7 @@ const staticFAQs = [
 ];
 
 // Your actual Gemini API key
-const GEMINI_API_KEY = 'AIzaSyCbKb-IgpXw_Wa6xPyNupShd4tVd3Wp6z0';
+const GEMINI_API_KEY = 'AIzaSyB8JxfERKiU0qbDjFw0A1AdUEP0kmSJPDI';
 
 // ✅ FIX: use an active 2.5 model instead of retired 1.5/pro
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${GEMINI_API_KEY}`;
@@ -35,10 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiContent = document.getElementById('ai-content');
     const aiLoading = document.querySelector('.ai-loading');
 
+    // Helper: Slugify function for IDs
+    function slugify(text) {
+        return text.toString().toLowerCase()
+            .trim()
+            .replace(/\s+/g, '-')           // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+            .replace(/\-\-+/g, '-');        // Replace multiple - with single -
+    }
+
     // Render Static FAQs
     function renderFAQs(faqs) {
-        faqList.innerHTML = faqs.map((faq, index) => `
-            <div class="faq-item">
+        faqList.innerHTML = faqs.map((faq, index) => {
+            const id = slugify(faq.question);
+            return `
+            <div class="faq-item" id="${id}">
                 <div class="faq-question" onclick="toggleAccordion(this)">
                     ${faq.question}
                     <i class="fa-solid fa-chevron-down"></i>
@@ -47,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>${faq.answer}</p>
                 </div>
             </div>
-        `).join('');
+        `}).join('');
     }
 
     renderFAQs(staticFAQs);
@@ -65,8 +76,50 @@ document.addEventListener('DOMContentLoaded', () => {
         // Toggle current item
         if (!isActive) {
             item.classList.add('active');
+
+            // Update URL hash without scrolling
+            const id = item.id;
+            if (id) {
+                history.replaceState(null, null, '#' + id);
+            }
+        } else {
+            // Remove hash if closing (optional, usually keeping it is fine but let's clear it if they close the specific item)
+            history.replaceState(null, null, ' ');
         }
     };
+
+    // Check for hash on load
+    function checkHash() {
+        const hash = window.location.hash.substring(1); // Remove #
+        if (hash) {
+            const element = document.getElementById(hash);
+            if (element) {
+                // Determine if it's an FAQ item
+                if (element.classList.contains('faq-item')) {
+                    // Provide a small delay to ensure rendering is complete and to make the transition visible
+                    setTimeout(() => {
+                        element.classList.add('active');
+                        element.classList.add('target-highlight');
+                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                        // Remove highlight after animation
+                        setTimeout(() => {
+                            element.classList.remove('target-highlight');
+                        }, 2000);
+                    }, 100);
+                }
+            }
+        }
+    }
+
+    checkHash();
+
+    // Handle hash change (e.g. forward/back buttons)
+    window.addEventListener('hashchange', () => {
+        // Close all first to be clean
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        checkHash();
+    });
 
     // Search Functionality
     function handleSearch() {
